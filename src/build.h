@@ -62,7 +62,7 @@ struct Plan {
   };
 
   /// Mark an edge as done building (whether it succeeded or failed).
-  void EdgeFinished(Edge* edge, EdgeResult result);
+  bool EdgeFinished(Edge* edge, EdgeResult result, string* err);
 
   /// Clean the given node during the build.
   /// Return false on error.
@@ -73,7 +73,7 @@ struct Plan {
 
 private:
   bool AddSubTarget(Node* node, Node* dependent, string* err);
-  void NodeFinished(Node* node);
+  bool NodeFinished(Node* node, string* err);
 
   /// Submits a ready edge as a candidate for execution.
   /// The edge may be delayed from running, for example if it's a member of a
