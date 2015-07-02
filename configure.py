@@ -488,6 +488,7 @@ for name in ['build',
              'line_printer',
              'manifest_parser',
              'metrics',
+             'parser',
              'state',
              'util',
              'version']:
