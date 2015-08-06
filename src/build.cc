@@ -309,11 +309,9 @@ bool Plan::AddSubTarget(Node* node, Node* dependent, string* err) {
   // mark it now.
   if (node->dirty() && !want) {
     want = true;
-    ++wanted_edges_;
+    EdgeWanted(edge);
     if (edge->AllInputsReady())
       ScheduleWork(edge);
-    if (!edge->is_phony())
-      ++command_edges_;
   }
 
   if (!want_ins.second)
@@ -326,6 +324,12 @@ bool Plan::AddSubTarget(Node* node, Node* dependent, string* err) {
   }
 
   return true;
+}
+
+void Plan::EdgeWanted(Edge* edge) {
+  ++wanted_edges_;
+  if (!edge->is_phony())
+    ++command_edges_;
 }
 
 Edge* Plan::FindWork() {
