@@ -77,6 +77,7 @@ private:
   bool NodeFinished(Node* node, string* err);
 
   void EdgeWanted(Edge* edge);
+  bool EdgeMaybeReady(Edge* edge, bool wanted, string* err);
 
   /// Submits a ready edge as a candidate for execution.
   /// The edge may be delayed from running, for example if it's a member of a

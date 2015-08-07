@@ -398,15 +398,21 @@ bool Plan::NodeFinished(Node* node, string* err) {
       continue;
 
     // See if the edge is now ready.
-    if ((*oe)->AllInputsReady()) {
-      if (want_e->second) {
-        ScheduleWork(*oe);
-      } else {
-        // We do not need to build this edge, but we might need to build one of
-        // its dependents.
-        if (!EdgeFinished(*oe, kEdgeSucceeded, err))
-          return false;
-      }
+    if (!EdgeMaybeReady(want_e->first, want_e->second, err))
+      return false;
+  }
+  return true;
+}
+
+bool Plan::EdgeMaybeReady(Edge* edge, bool wanted, string* err) {
+  if (edge->AllInputsReady()) {
+    if (wanted) {
+      ScheduleWork(edge);
+    } else {
+      // We do not need to build this edge, but we might need to build one of
+      // its dependents.
+      if (!EdgeFinished(edge, kEdgeSucceeded, err))
+        return false;
     }
   }
   return true;
