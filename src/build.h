@@ -72,8 +72,13 @@ struct Plan {
   /// Number of edges with commands to run.
   int command_edge_count() const { return command_edges_; }
 
+  bool DyndepsLoaded(DependencyScan* scan, Node* node,
+                     DyndepFile const& ddf, string* err);
 private:
-  bool AddSubTarget(Node* node, Node* dependent, string* err);
+  bool RefreshDyndepDependents(DependencyScan* scan, Node* node, string* err);
+  void UnmarkDependents(Node* node, set<Node*>* dependents);
+  bool AddSubTarget(Node* node, Node* dependent, string* err,
+                    set<Edge*>* dyndep_walk);
   bool NodeFinished(Node* node, string* err);
 
   void EdgeWanted(Edge* edge);
@@ -178,6 +183,9 @@ struct Builder {
     scan_.set_build_log(log);
   }
 
+  /// Load the dyndep information provided by the given node.
+  bool LoadDyndeps(Node* node, string* err);
+
   State* state_;
   const BuildConfig& config_;
   Plan plan_;
@@ -204,6 +212,7 @@ struct BuildStatus {
   void BuildEdgeStarted(Edge* edge);
   void BuildEdgeFinished(Edge* edge, bool success, const string& output,
                          int* start_time, int* end_time);
+  void BuildLoadDyndeps();
   void BuildStarted();
   void BuildFinished();
 
