@@ -72,9 +72,7 @@ struct Plan {
   int command_edge_count() const { return command_edges_; }
 
 private:
-  bool AddSubTarget(Node* node, vector<Node*>* stack, string* err);
-  bool CheckDependencyCycle(Node* node, const vector<Node*>& stack,
-                            string* err);
+  bool AddSubTarget(Node* node, Node* dependent, string* err);
   void NodeFinished(Node* node);
 
   /// Submits a ready edge as a candidate for execution.
