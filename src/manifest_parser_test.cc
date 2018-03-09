@@ -1089,7 +1089,8 @@ TEST_F(ParserTest, DyndepNotSpecified) {
 
 TEST_F(ParserTest, DyndepNotInput) {
   State lstate;
-  ManifestParser parser(&lstate, NULL, kDupeEdgeActionWarn);
+  ManifestParserOptions options;
+  ManifestParser parser(&lstate, NULL, options);
   string err;
   EXPECT_FALSE(parser.ParseTest(
 "rule touch\n"
